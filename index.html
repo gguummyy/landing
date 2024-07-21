@@ -28,6 +28,7 @@
       overflow: hidden;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
       padding: 10px; /* Optional padding for spacing */
+      margin-top: 20px; /* Add some space between the image and the email form */
     }
     .container img {
       max-width: 100%;
@@ -39,15 +40,88 @@
       text-decoration: none;
       font-weight: bold;
     }
+    .email-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .email-form input[type="email"] {
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      margin-bottom: 10px;
+      width: 250px;
+      box-sizing: border-box;
+    }
+    .email-form button {
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: none;
+      background-color: #fdc9ff;
+      color: #6a6a6a;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .email-form button:hover {
+      background-color: #e5b3e4;
+    }
+    .success-message {
+      color: #28a745; /* Green color for success */
+      margin-top: 10px;
+      display: none; /* Hide initially */
+    }
   </style>
 </head>
 <body>
   <p style="font-size: 18px;">GGUUMMYY || Under Development</p>
-  <p>a special chat app!</p>
+  <p>A special chat app!</p>
   <p>Join our <a href="https://discord.gg/p4d8ywzhPg" target="_blank">Discord</a> || <a href="https://github.com/gguummyy" target="_blank">GitHub</a></p>
 
   <div class="container">
     <img src="screenshot.png" alt="screenshot">
   </div>
+
+  <div class="email-form">
+    <p>Join our wishlist to stay updated!</p>
+    <form id="emailForm">
+      <input type="email" name="email" id="emailInput" placeholder="Enter your email" required>
+      <button type="submit">Subscribe</button>
+    </form>
+    <div class="success-message" id="successMessage">Success! You've been added to the wishlist.</div>
+  </div>
+
+  <script>
+    document.getElementById('emailForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      const emailInput = document.getElementById('emailInput');
+      const email = emailInput.value;
+      const successMessage = document.getElementById('successMessage');
+
+      fetch('https://script.google.com/macros/s/AKfycbySVkZ9832pQkt5C4_MHGifw1dqJQLJmxZPtoGQxy1UdECVySCIb5Qtbvz3AvtPEGDPOA/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          'email': email
+        })
+      })
+      .then(response => {
+        if (response.ok) {
+          successMessage.style.display = 'block';
+          emailInput.value = ''; // Clear the input field
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      })
+      .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+      });
+    });
+  </script>
 </body>
 </html>
